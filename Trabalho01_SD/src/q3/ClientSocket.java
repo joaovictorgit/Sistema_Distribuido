@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-public class ClientSocket {
+public class ClientSocket implements Serializable{
     private final Socket socket;
     private final BufferedReader in;
     private final PrintWriter out;
