@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui">
+   <h:head>
+        <title>Chat EJB</title>
+        <style type="text/css">
+            #name {
+                width: 300px;
+                height: 15px;
+            }
+            
+            #text {
+                width: 300px;
+                height: 15px;
+            }
+            
+            #enviar {
+                color: white;
+                background: #55D262;
+            }
+            
+            #enviar:hover {
+                background: #55ef62;
+            }
+            
+            #limpar {
+                color: white;
+                background: #2C8EFD;
+            }
+            
+            #limpar:hover {
+                background: #2cb1fd;
+            }
+            
+            #msgs {
+                border-bottom: 3px;
+            }
+            
+            .msg {
+                border-bottom: 1px solid black;
+            }
+        </style>
+    </h:head>
+    <script type="text/javascript">
+        setInterval("nextMessage()", 200); //update the chart every 200 ms               
+         
+        function updateMessages(xhr, status, args) {
+            if(!args.ok) return;
+            $('#chat').append('<div class="msg">[' +args.dateSent+ '] <strong>'+args.user+'</strong>: '+args.text+'</div>');
+        }
+         
+    </script>
+    <h:body>
+        <h:form prependId="false">
+            <h:panelGrid columns="2">
+                Name: <p:inputText id="name" value="#{messageBean.message.user}"/>
+                Text: <p:inputText id="text" value="#{messageBean.message.message}"/>
+                <p:commandButton id="limpar" type="reset" value="Limpar"/>
+                <p:commandButton id="enviar" value="Enviar" actionListener="#{messageBean.sendMessage}"/>
+            </h:panelGrid>
+ 
+            <p:remoteCommand id="msgs" name="nextMessage" actionListener="#{messageBean.firstUnreadMessage}"
+                             oncomplete="updateMessages(xhr, status, args);"/>
+        </h:form>
+        <hr/>
+        <h3>Chat</h3>
+        <div id="chat"></div>
+    </h:body>
+</html>
+
